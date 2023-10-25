@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 typedef int data_t;
 
@@ -10,78 +11,40 @@ struct TreeNode {
 
 typedef TreeNode* TTree;
 
-// 1) Создание пустого
-void init(TTree& root) { root = nullptr; }
+// Проверка на пустоту
+bool isTreeEmpty(const TTree& root);
 
-bool isTreeEmpty(const TTree& root) { return root == nullptr; }
+void viewTree(TTree root);
+
+// 1) Создание пустого
+void init(TTree& root);
 
 // 2) Создание с одним узлом
-void init(TTree& root, data_t elem) {
-  root = new TreeNode;
-  root->data = elem;
-  root->left = nullptr;
-  root->right = nullptr;
-}
+void init(TTree& root, data_t elem);
 
-// 8) Присоединение к корню левого поддерева
-bool attachLeftSubTree(TTree root, TTree subTree) {
-  bool canAttach = false;
-  if (root->left == nullptr) {
-    root->left = subTree;
-    canAttach = true;
-  }
-  return canAttach;
-}
+// 8.1) Присоединение к корню левого поддерева
+bool attachLeftSubTree(TTree root, TTree subTree);
+// 8.2) Присоединение к корню левого поддерева
+bool attachRightSubTree(TTree root, TTree subTree);
 
-bool attachRightSubTree(TTree root, TTree subTree) {
-  bool canAttach = false;
-  if (root->right == nullptr) {
-    root->right = subTree;
-    canAttach = true;
-  }
-  return canAttach;
-}
+// 3) Создание бинарного дерева по заданному корню и двум бинарным поддеревьям
+// этого корня.
+void init(TTree& root, data_t elem, TTree leftSubTree, TTree rightSubTree);
 
-// 3)
-void init(TTree& root, data_t elem, TTree leftSubTree, TTree rightSubTree) {
-  init(root, elem);
-  attachLeftSubTree(root, leftSubTree);
-  attachRightSubTree(root, rightSubTree);
-}
+// 9.1) Отсоединение левого поддерева
+void detachLeftSubTree(TTree root, TTree& leftSubTree);
 
-// Отсоединение левого поддерева
-void detachLeftSubTree(TTree root, TTree& leftSubTree) {
-  leftSubTree = root->left;
-  root->left = nullptr;
-}
+// 9.2) Отсоединение правого поддерева
+void detachRightSubTree(TTree root, TTree& rightSubTree);
 
-// Создание копии дерева
-void copyTree(TTree root, TTree& newRoot) {
-  if (root != nullptr) {
-    newRoot = new TreeNode;
-    newRoot->data = root->data;
-    newRoot->left = nullptr;
-    newRoot->right = nullptr;
-    copyTree(root->left, newRoot->left);
-    copyTree(root->right, newRoot->right);
-  }
-}
+// 10) Создание копии дерева
+void copyTree(TTree root, TTree& newRoot);
 
-// Получение копии левого поддерева
-TTree getLeftSubTree(TTree root) {
-  TTree toReturn = nullptr;
-  copyTree(root->left, toReturn);
-  return toReturn;
-}
+// 11.1) Получение копии левого поддерева
+TTree getLeftSubTree(TTree root);
 
-// Удаление бинарного дерева
-void destroyTree(TTree& root) {
-  if (root != nullptr) {
-    destroyTree(root->left);
-    destroyTree(root->right);
-    root->left = nullptr;
-    root->right = nullptr;
-    delete root;
-    root = nullptr;
-  }
-}
+// 11.2) Получение копии правого поддерева
+TTree getRightSubTree(TTree root);
+
+// 12) Удаление бинарного дерева
+void destroyTree(TTree& root);
