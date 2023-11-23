@@ -1,5 +1,7 @@
 #pragma once
+#include <fstream>
 #include <iostream>
+#include <string>
 
 typedef int data_t;
 
@@ -48,3 +50,76 @@ TTree getRightSubTree(TTree root);
 
 // 12) Удаление бинарного дерева
 void destroyTree(TTree& root);
+
+// префиксный обход
+void preOrderView(TTree root);
+
+// дописать остальные обходы в глубину ...
+
+// Обход в ширину на очереди
+void breadthFirstSearch(TTree root);
+
+// Итеративный(симметричный) обход в глубину с помощью стека
+void inorderIterative(TTree root);
+
+// Сбалансированное дерево
+void createBalancedTree(TTree& root, std::string filename);
+
+// Вставка в дерево поиска
+void insert(TTree& root, data_t elem);
+
+bool search(TTree root, data_t elem) {
+  if (root != nullptr) {
+    if(root->data == elem)
+      return true;
+    else if (root->data > elem) {
+      return search(root->left, elem);
+    }
+    else {
+      return search(root->right, elem);
+    }
+  } else
+    return false;
+}
+
+data_t findSuccessor(TTree p) {
+  TTree cur = p;
+  while (cur->left != nullptr) {
+    cur = cur->left;
+  }
+  data_t elem = cur->data;
+  TTree temp = cur;
+  cur = cur->right;
+  delete temp;
+  return elem;
+}
+
+void deleteNode(TTree& pnode) {
+  if (pnode->left == nullptr && pnode->right == nullptr) {
+    delete pnode;
+    pnode = nullptr;
+  } else if (pnode->left == nullptr || pnode->right == nullptr) {
+    TTree temp = pnode;
+    if (pnode->left != nullptr) {
+      pnode = pnode->left;
+    } else {
+      pnode = pnode->right;
+    }
+    delete temp;
+  } else {
+    pnode->data = findSuccessor(pnode->right);
+  }
+}
+
+// Удаление
+void remove(TTree root, data_t elem) {
+  if (root != nullptr) {
+    if (root->data == elem)
+      deleteNode(root);
+    else if (root->data > elem) {
+      remove(root->left, elem);
+    } else {
+      remove(root->right, elem);
+    }
+  }
+}

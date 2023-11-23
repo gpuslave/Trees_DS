@@ -86,3 +86,85 @@ void viewTree(TTree root) {
     viewTree(root->right);
   }
 }
+
+void preOrderView(TTree root) {
+  if (root != nullptr) {
+    std::cout << root->data;
+    preOrderView(root->left);
+    preOrderView(root->right);
+  }
+}
+
+// BFS , DFS
+void breadthFirstSearch(TTree root) {
+  /*  TQueue queue;
+      queue.enque(root);
+      while(!queue.isEmpty()) {
+        TTree cur = queue.peek();
+        cout << cur->data;
+        if(cur->left) queue.enque(cur->left);
+        if(cur->right) queue.enque(cur->right);
+        queue.deque();
+      }
+  */
+}
+
+// BAC
+void inorderIterative(TTree root) {
+  /*  TStack stack;
+      bool done = false;
+      TTree cur = root;
+
+      while(!done) {
+        if(cur != nullptr) {
+          stack.push(cur);
+          cur = cur->left;
+        } else if(!stack.isEmpty()){
+          cur = stack.peek();
+          stack.pop();
+          cout << cur->data;
+          cur = cur->right;
+        } else {
+          done = true;
+        }
+      }
+  */
+  return;
+}
+
+TTree createNode(int n, std::ifstream& fin) {
+  if (n == 0)
+    return nullptr;
+  else {
+    TTree newNode = new TreeNode;
+    fin >> newNode->data;
+    newNode->left = createNode(n / 2, fin);
+    newNode->right = createNode(n - n / 2 - 1, fin);
+    return newNode;
+  }
+}
+
+void createBalancedTree(TTree& root, std::string filename) {
+  std::ifstream fin(filename);
+  int n;
+  fin >> n;
+  root = createNode(n, fin);
+  fin.close();
+}
+
+void insert(TTree& root, data_t elem) {
+  if (root == nullptr) {
+    root = new TreeNode;
+    root->data = elem;
+    root->left = nullptr;
+    root->right = nullptr;
+  } else {
+    if (root->data > elem) {
+      insert(root->left, elem);
+    }
+    if (root->data < elem) {
+      insert(root->right, elem);
+    }
+  }
+}
+

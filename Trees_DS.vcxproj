@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="btree.cpp" />
     <ClCompile Include="Trees_DS.cpp" />
+    <ClCompile Include="Trie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="btree.h" />
